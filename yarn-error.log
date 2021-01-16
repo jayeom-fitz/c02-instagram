@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\djawj\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js install
+  C:\Program Files\nodejs\node.exe C:\Users\djawj\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add expo-cli
 
 PATH: 
   C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Users\djawj\AppData\Local\Microsoft\WindowsApps;;C:\Users\djawj\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\djawj\AppData\Roaming\npm
@@ -14,16 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/core-js/-/core-js-2.6.12.tgz: ESOCKETTIMEDOUT
-      at ClientRequest.<anonymous> (C:\Users\djawj\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141289:19)
-      at Object.onceWrapper (events.js:421:28)
-      at ClientRequest.emit (events.js:315:20)
-      at TLSSocket.emitRequestTimeout (_http_client.js:784:9)
-      at Object.onceWrapper (events.js:421:28)
-      at TLSSocket.emit (events.js:327:22)
-      at TLSSocket.Socket._onTimeout (net.js:483:8)
-      at listOnTimeout (internal/timers.js:554:17)
-      at processTimers (internal/timers.js:497:7)
+  Error: UNKNOWN: unknown error, unlink 'C:\Users\djawj\AppData\Local\Yarn\Cache\v6\npm-react-native-0.63.2-5a545ad0b464824817ad699bb104d031d6ff6c39\node_modules\react-native\Libraries\DeprecatedPropTypes\DeprecatedViewAccessibility.js'
 
 npm manifest: 
   {

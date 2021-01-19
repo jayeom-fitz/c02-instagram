@@ -61,17 +61,25 @@ export class App extends Component {
       );
     } 
 
-    return (
-      <NavigationContainer>
-        <Stack.Navigator InitialRouteName="Landing">
-          <Stack.Screen name="Landing" 
-                        component={LandingScreen} 
-                        options={{ headerShown : false }} />
-          <Stack.Screen name="Register" 
-                        component={RegisterScreen} />
-        </Stack.Navigator>
-      </NavigationContainer> 
-    )
+    if(!loggedIn) {
+      return (
+        <NavigationContainer>
+          <Stack.Navigator InitialRouteName="Landing">
+            <Stack.Screen name="Landing" 
+                          component={LandingScreen} 
+                          options={{ headerShown : false }} />
+            <Stack.Screen name="Register" 
+                          component={RegisterScreen} />
+          </Stack.Navigator>
+        </NavigationContainer> 
+      )
+    }
+
+    return(
+      <View style={{ flex : 1, justifyContent : 'center' }}>
+        <Text>User Logged In</Text>
+      </View>
+    );
   }
 }
 

@@ -5,26 +5,48 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { fetchUser } from '../redux/actions/index'
 
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+
+import FeedScreen from './main/Feed'
+import AddScreen from './main/Add'
+import ProfileScreen from './main/Profile'
+
+const Tab = createBottomTabNavigator();
+
 export class Main extends Component {
   componentDidMount() {
     this.props.fetchUser();
   }
 
   render() {
-    const { currentUser } = this.props;
-    
-    console.log(currentUser);
-    if(currentUser == undefined) {
-      return (
-        <View>none</View>
-      );
-    }
-
-
     return (
-      <View style={{ flex : 1, justifyContent : 'center' }}>
-        <Text>User Logged In</Text>
-      </View>
+      <Tab.Navigator>
+        <Tab.Screen name="Feed" component={FeedScreen} 
+                    options={{
+                      tabBarIcon: ({color, size}) => (
+                        <MaterialCommunityIcons name="home" color={color} size={26} />
+                      )
+                    }}/>
+        <Tab.Screen name="Add" component={AddScreen}
+                    listeners={({ navigation }) => ({
+                      tabPress: event => {
+                        event.preventDefault();
+                        navigation.navigate('Add');
+                      }
+                    })} 
+                    options={{
+                      tabBarIcon: ({color, size}) => (
+                        <MaterialCommunityIcons name="plus-box" color={color} size={26} />
+                      )
+                    }}/>
+        <Tab.Screen name="Profile" component={ProfileScreen} 
+                    options={{
+                      tabBarIcon: ({color, size}) => (
+                        <MaterialCommunityIcons name="account-circle" color={color} size={26} />
+                      )
+                    }}/>
+      </Tab.Navigator>
     )
   }
 }

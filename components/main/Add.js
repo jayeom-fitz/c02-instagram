@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import { Camera } from 'expo-camera';
 import { Button } from 'react-native-paper';
 
+import { Camera } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
+
 export default function Add() {
-  const [hasPermission, setHasPermission] = useState(null);
+  const [hasCameraPermission, setCameraHasPermission] = useState(null);
+  const [hasGalleryPermission, setGalleryHasPermission] = useState(null);
   const [camera, setCamera] = useState(null);
   const [image, setImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
 
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+      const cameraStatus = await Camera.requestPermissionsAsync();
+      setCameraHasPermission(cameraStatus.state === 'granted');
+
+      const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      setGalleryHasPermission(galleryStatus.state === 'granted');
     })();
   }, []);
 
@@ -23,11 +29,26 @@ export default function Add() {
     }
   };
 
-  if (hasPermission === null) {
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  if (hasCameraPermission === null || hasGalleryPermission === null) {
     return <View />;
   }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+  if (hasCameraPermission === false || hasGalleryPermission === false) {
+    return <Text>No Access to Camera or Gallery</Text>;
   }
   return (
     <View style={{ flex: 1 }}>
@@ -43,14 +64,6 @@ export default function Add() {
                 alignSelf: 'flex-end',
                 alignItems: 'center',      
               }}
-              title="Take Picture"
-              onPress={() => takePicture()}>
-      </Button>
-      <Button style={{ 
-                flex: 0.1,
-                alignSelf: 'flex-end',
-                alignItems: 'center',      
-              }}
               title="Flip Image"
               onPress={() => {
                 setType(
@@ -60,6 +73,12 @@ export default function Add() {
                 );
               }}>
       </Button>
+
+      <Button title="Take Picture"
+              onPress={() => takePicture()} />
+      <Button title="Pick Image From Gallery"
+              onPress={() => pickImage()} />
+
       {image && 
         <Image source={{uri: image}}
               style={{flex : 1}}/>}

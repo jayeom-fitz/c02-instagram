@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Button } from 'react-native-paper';
 
 export default function Add() {
   const [hasPermission, setHasPermission] = useState(null);
+  const [camera, setCamera] = useState(null);
+  const [image, setImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
 
   useEffect(() => {
@@ -13,6 +15,13 @@ export default function Add() {
       setHasPermission(status === 'granted');
     })();
   }, []);
+
+  const takePicture = async () => {
+    if(camera) {
+      const data = await camera.takePictureAsync(null);
+      console.log(data.uri);
+    }
+  };
 
   if (hasPermission === null) {
     return <View />;
@@ -25,9 +34,18 @@ export default function Add() {
       <View style={styles.cameraContainer}>
         <Camera style={styles.fixedRatio} 
                 type={type} 
-                ratio={'1:1'}/>
+                ratio={'1:1'}
+                ref={ref => setCamera(ref)}/>
       </View>
 
+      <Button style={{ 
+                flex: 0.1,
+                alignSelf: 'flex-end',
+                alignItems: 'center',      
+              }}
+              title="Take Picture"
+              onPress={() => takePicture()}>
+      </Button>
       <Button style={{ 
                 flex: 0.1,
                 alignSelf: 'flex-end',
@@ -42,6 +60,9 @@ export default function Add() {
                 );
               }}>
       </Button>
+      {image && 
+        <Image source={{uri: image}}
+              style={{flex : 1}}/>}
     </View>
   );
 }

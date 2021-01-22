@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, Button } from 'react-native';
 
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
+import { set } from 'react-native-reanimated';
 
 export default function Add({ navigation }) {
   const [hasCameraPermission, setCameraHasPermission] = useState(null);
@@ -10,6 +11,11 @@ export default function Add({ navigation }) {
   const [camera, setCamera] = useState(null);
   const [image, setImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
+
+  const settingImage = (image) => {
+    console.log(image);
+    setImage(image.uri);
+  };
 
   useEffect(() => {
     (async () => {
@@ -24,7 +30,7 @@ export default function Add({ navigation }) {
   const takePicture = async () => {
     if(camera) {
       const data = await camera.takePictureAsync(null);
-      setImage(data.uri);
+      settingImage(data);
     }
   };
 
@@ -36,10 +42,8 @@ export default function Add({ navigation }) {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
-      setImage(result.uri);
+      settingImage(result);
     }
   };
 

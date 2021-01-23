@@ -56,6 +56,6 @@ export class Main extends Component {
 const mapStateToProps = (store) => ({
   currentUser: store.userState.currentUser
 });
-const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser}, dispatch);
+const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, fetchUserPosts}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchProps)(Main)

@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import '@firebase/firestore'
-import { USER_STATE_CHANGE } from '../constants/index'
+import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE } from '../constants/index'
 
 export function fetchUser() {
   return ((dispatch) => {
@@ -31,7 +31,7 @@ export function fetchUserPosts() {
         let posts = snapshot.docs.map(doc => {
           const data = doc.data();
           const id = doc.id;
-          return {id, data};
+          return {id, ...data};
         });
 
         dispatch({

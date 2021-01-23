@@ -90,8 +90,7 @@ export class App extends Component {
         <NavigationContainer>
           <Stack.Navigator InitialRouteName="Main">
             <Stack.Screen name="Main" 
-                          component={MainScreen} 
-                          options={{ headerShown : false }} />
+                          component={MainScreen} />
             <Stack.Screen name="Add" 
                           component={AddScreen}
                           navigation={this.props.navigation}/>

@@ -7,11 +7,10 @@ import { connect } from 'react-redux'
 function Profile(props) {
   const { currentUser, posts } = props;
 
-  console.log(posts);
-
   return (
     <View style={styles.container}>
-      <StatusBar style="light" />
+      <StatusBar backgroundColor="#6666dd" />
+     
       <View style={styles.containerInfo}>
         <Text>{currentUser.email}</Text>
         <Text>{currentUser.name}</Text>

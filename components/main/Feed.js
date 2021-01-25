@@ -1,15 +1,78 @@
-import React, { Component } from 'react'
-import { Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, Text, View, Image, FlatList, Button } from 'react-native';
+import { StatusBar } from 'expo-status-bar'
 
+import { connect } from 'react-redux'
+import firebase from 'firebase'
+require('firebase/firestore');
 
-export class Feed extends Component {
-  render() {
-    return (
-      <View>
-        <Text>Feed</Text>
+function Feed(props) {
+  const [posts, setPosts] = useState([]);
+  
+  useEffect(() => {
+    let posts = [];
+    
+    if(props.usersLoaded == props.following.length) {
+      for(let i=0; i<props.following.length; i++) {
+        const user = props.users.find(el => el.uid === props.following)[i];
+        if(user != undefined) {
+          posts = [...posts, ...user.posts];
+        }
+      }
+
+      posts.sort(function(x,y) {
+        return x.creation - y.creation;
+      });
+
+      setPosts(posts);
+    }
+  }, [props.usersLoaded]);
+
+  return (
+    <View style={styles.container}>
+      <StatusBar backgroundColor="#6666dd" />
+     
+      <View style={styles.containerGallery}>
+        <FlatList numColumns={1}
+                  horizontal={false}
+                  data={posts} 
+                  renderItem={({item}) => (
+                    <View style={styles.containerImage}>
+                      <Text>{item.user.name}</Text>
+                      <Image style={styles.image}
+                            source={{uri : item.downloadURL}}/>
+                    </View>
+                  )}/>
       </View>
-    )
-  }
+    </View>
+  )
 }
 
-export default Feed
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  containerInfo : {
+    flex: 1,
+  },
+  containerGallery : {
+    flex: 1,
+  },
+  containerImage : {
+    flex: 1/3,
+  },
+  image: {
+    flex: 1,
+    aspectRatio: 1/1
+  }
+});
+
+const mapStateToProps = (store) => ({
+  currentUser: store.userState.currentUser,
+  following: store.userState.following,
+  users: store.usersState.users,
+  usersLoaded: store.usersState.usersLoaded,
+});
+
+export default connect(mapStateToProps, null)(Feed);
+

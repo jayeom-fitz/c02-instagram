@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (store) => ({
   currentUser: store.userState.currentUser,
   posts: store.userState.posts,
-  follwing: store.userState.following
+  following: store.userState.following
 });
 
 export default connect(mapStateToProps, null)(Profile);

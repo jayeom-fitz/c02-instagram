@@ -11,10 +11,13 @@ function Feed(props) {
   
   useEffect(() => {
     let posts = [];
-    
+
+    console.log(props.usersLoaded);
+    console.log(props.following.length);
+
     if(props.usersLoaded == props.following.length) {
       for(let i=0; i<props.following.length; i++) {
-        const user = props.users.find(el => el.uid === props.following)[i];
+        const user = props.users.find(el => el.uid === props.following[i]);
         if(user != undefined) {
           posts = [...posts, ...user.posts];
         }

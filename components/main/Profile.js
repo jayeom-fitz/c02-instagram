@@ -73,6 +73,10 @@ function Profile(props) {
       .delete()
   }
 
+  const onLogout = () => {
+    firebase.auth().signOut();
+  }
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#6666dd" />
@@ -91,8 +95,12 @@ function Profile(props) {
                       onPress={() => onFollow()} />  
             )}
           </View>
-        ) : null}
+        ) : (
+          <Button title="Logout"
+                  onPress={() => onLogout()} />
+        )}
       </View>
+
       <View style={styles.containerGallery}>
         <FlatList numColumns={3}
                   horizontal={false}

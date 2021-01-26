@@ -5,6 +5,7 @@ import { USER_STATE_CHANGE,
           USER_FOLLOWING_STATE_CHANGE,
           USERS_DATA_STATE_CHANGE,
           USERS_POSTS_STATE_CHANGE,
+          USERS_LIKES_STATE_CHANGE,
           CLEAR_DATA } from '../constants/index'
 
 export function clearData() {
@@ -123,13 +124,40 @@ export function fetchUsersFollowingPosts(uid) {
           return {id, ...data, user};
         });
 
+        for(let i=0; i<posts.length; i++) {
+          dispatch(fetchUsersFollowingLikes(uid, postId));
+        }
+
         dispatch({
           type: USERS_POSTS_STATE_CHANGE, 
           posts,
           uid
         });
+      })
+  })
+}
 
-        console.log('왜 안나와');
+export function fetchUsersFollowingLikes(uid, postId) {
+  return ((dispatch, getState) => {
+    firebase.firestore().collection("posts")
+      .doc(uid)
+      .collection("userPosts")
+      .doc(postId)
+      .collection('likes')
+      .doc(firebase.auth().currentUser.uid)
+      .onSnapshot((snapshot) => {
+        const postId = snapshot.ZE.path.segments[3];
+
+        let currentUserLike = false;
+        if(snapshot.exists) {
+          currentUserLike = true;
+        }
+
+        dispatch({
+          type: USERS_LIKES_STATE_CHANGE, 
+          postId,
+          currentUserLike
+        });
       })
   })
 }
